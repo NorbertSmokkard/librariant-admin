@@ -58,14 +58,34 @@
       </v-select>
     </v-container>
 
- <v-textarea
+
+          <v-text-field
+           class="my-2"
+            v-model="totalAmount"
+            :rules="digitRules"
+            :counter="5"
+            label="Общее кол-во книг"
+            
+          ></v-text-field>
+
+          
+          <v-text-field
+          class="my-2"
+            v-model="amount"
+            :rules="digitRules"
+            :counter="5"
+            label="Кол-во книг на складе"
+            
+          ></v-text-field>
+
+         <v-textarea
           outlined
           name="input-7-4"
           label="Аннотация"
           value=""
         ></v-textarea>
 
-
+<!--
          <v-select class="ma-0" 
           style="width: 100%;" 
           :rules="genreRules"
@@ -77,8 +97,22 @@
             hint="Статус" 
             persistent-hint>
             </v-select>
-
-
+-->
+<p class="text--secondary">Выберите статус</p>
+<v-radio-group
+      v-model="row"
+      row
+      mandatory
+    >
+      <v-radio
+      class="ma-2"
+       v-for="(item,i) in statusList"
+        :key = "i"
+        :label = item.title
+        :value= item.value
+      ></v-radio>
+  
+    </v-radio-group>
 
         </v-col>
 
@@ -185,6 +219,8 @@ export default {
       bookname: '',
       pseudo: '',
       country:'',
+      totalAmount:'',
+      amount:'',
 
 
       nameRules: [
@@ -192,6 +228,12 @@ export default {
         v => v.length <= 50 || 'Текст должен быть не больше 50',
         v => /^[a-zA-Zа-яА-Я\\ \\.]+$/ui.test(v) || 'В тексте не должно быть спец. символов',
       ],  
+      
+      digitRules: [
+        v => v.length <= 5 || 'Число слишком большое',
+        v => (Number.isInteger(parseFloat(v)) ||(v=="")) || 'Число должно быть целым',
+        v => (/^\d+/ui.test(v)||(v=="")) || 'Это должно быть число',
+      ], 
       genreRules: [
         v => v.length!=0 || "Пусто",
       ],
